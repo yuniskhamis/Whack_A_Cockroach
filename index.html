@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <title>Whack-A-Cockroach</title>
+    <link href="css/game.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.5.0.js" integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous">
+
+    </script>
+    <script type="text/javascript">
+        var score = 0
+        var time = 30
+        var t;
+        var deleteCockroach = Math.floor((Math.random()*2500)+2000);
+        var interval = Math.floor((Math.random() * 2000));
+        var repeatCockroach;
+
+        $(document).ready(function(){
+            $('#start_button').click(function (){
+                start();
+            })
+            $('#gamespace').on('click' ,"img", function () {
+                counter();
+                $(this).hide();
+            })
+            $('#start_button').on('click',function() {
+                $(this).prop("disabled",true);
+            })
+        })
+
+        function yPos(){
+            return Math.floor((Math.random() * 300));
+        }
+
+        function xPos(){
+            return Math.floor((Math.random() * 500));
+        }
+
+        function counter() {
+            score++;
+            $("#score").html(score + ' pts');
+        }
+
+        function start() {
+            $('#timer').show();
+            decrement();
+            if (time > 0) {
+                addCockroach();
+            }
+            $('h1').css("color","purple");
+            $('#gamespace').css("background-color", "green");
+        }
+
+        function decrement() {
+            time--;
+            $('#timer').html(time + ' seconds left');
+            t = setTimeout('decrement()', 1000);
+            if (time <=0){
+                clearTimeout(t);
+                if (time<=0){
+                    $('#start_button').prop("disabled", false)
+                }
+                alert('Game Over! You scored ' + score + ' pts!');
+                location.reload();
+            }
+        }
+
+        function addCockroach() {
+            const repeatCockroach = setTimeout('addCockroach()', interval);
+            $('#gamespace').append('<img src="img/cockroach.png" width="100" height="100" alt="Photo of a cockroach" style="top:' + yPos() + 'px;left:' + xPos() + 'px;" >');
+            $("img").attr("img",function(count){ return count;}).fadeOut(deleteCockroach);
+
+            function cleartTimeout(repeatCockroach) {
+
+            }
+
+            if (time<=0){
+                cleartTimeout(repeatCockroach);
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+<div id="content">
+
+    <h1>Whack-A-Cockroach</h1>
+
+    <p>After clicking "start", you will have 30 seconds to click as many cockroaches as you can. The cockroaches appear randomly
+        so be ready! </p>
+
+    <div id="controls">
+        <span id="score">0 pts</span>
+        <button type="button" id="start_button">Start!</button>
+    </div>
+
+    <div id="timer">30 seconds left</div>
+
+    <div id="gamespace">
+
+
+
+    </div>
+
+</div>
+</body>
+</html>
